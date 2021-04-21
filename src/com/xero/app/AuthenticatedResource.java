@@ -918,7 +918,7 @@ public class AuthenticatedResource extends HttpServlet {
                     UUID taskId = null;
                     // GET ALL TASKS
                     try {
-                        Tasks tasks = projectApi.getTasks(accessToken, xeroTenantId, projectId, 1, 50, null);
+                        Tasks tasks = projectApi.getTasks(accessToken, xeroTenantId, projectId, 1, 50, null, null);
                         taskId = tasks.getItems().get(0).getTaskId();
                         messages.add("Get All Tasks total: " + tasks.getPagination().getItemCount());
                     } catch (XeroBadRequestException e) {
@@ -1055,7 +1055,7 @@ public class AuthenticatedResource extends HttpServlet {
                 
                 // CREATE a single Time Entry
                 try {
-                    Tasks tasks = projectApi.getTasks(accessToken, xeroTenantId, projectId, null, null, null);
+                    Tasks tasks = projectApi.getTasks(accessToken, xeroTenantId, projectId, null, null, null,  null);
                     ProjectUsers projectUsers = projectApi.getProjectUsers(accessToken, xeroTenantId,1,50);
                     
                     TimeEntryCreateOrUpdate createTimeEntry = new TimeEntryCreateOrUpdate();
@@ -1084,7 +1084,7 @@ public class AuthenticatedResource extends HttpServlet {
                 
                 // UPDATE a single Time Entry
                 try {
-                    Tasks tasks = projectApi.getTasks(accessToken, xeroTenantId, projectId, null, null, null);
+                    Tasks tasks = projectApi.getTasks(accessToken, xeroTenantId, projectId, null, null, null, null);
                     ProjectUsers projectUsers = projectApi.getProjectUsers(accessToken, xeroTenantId,1,50);
                     
                     TimeEntryCreateOrUpdate updateTimeEntry = new TimeEntryCreateOrUpdate();
@@ -2101,7 +2101,7 @@ public class AuthenticatedResource extends HttpServlet {
                 UUID payRunID = payRuns.getPayRuns().get(0).getPayRunID();
                 
                 // GET ALL PaySlips for UK Payroll
-                com.xero.models.payrolluk.Payslips paySlips = payrollUkApi.getPayslips(accessToken, xeroTenantId, payRunID, 1);
+                com.xero.models.payrolluk.Payslips paySlips = payrollUkApi.getPaySlips(accessToken, xeroTenantId, payRunID, 1);
                 UUID earningsRateID = paySlips.getPaySlips().get(0).getEarningsLines().get(0).getEarningsRateID();
                 
                 // GET ALL Time sheets for UK Payroll
@@ -2282,7 +2282,7 @@ public class AuthenticatedResource extends HttpServlet {
                 UUID payRunID = payRuns.getPayRuns().get(0).getPayRunID();
     
                 // GET ALL PaySlips for UK Payroll
-                com.xero.models.payrolluk.Payslips paySlips = payrollUkApi.getPayslips(accessToken, xeroTenantId, payRunID, 1);
+                com.xero.models.payrolluk.Payslips paySlips = payrollUkApi.getPaySlips(accessToken, xeroTenantId, payRunID, 1);
                 UUID earningsRateID = paySlips.getPaySlips().get(0).getEarningsLines().get(0).getEarningsRateID();
                
                 // GET Create Salary And Wages for UK Payroll
@@ -2373,7 +2373,7 @@ public class AuthenticatedResource extends HttpServlet {
                 UUID payRunID = payRuns.getPayRuns().get(0).getPayRunID();
     
                 // GET ALL PaySlips for UK Payroll
-                com.xero.models.payrolluk.Payslips paySlips = payrollUkApi.getPayslips(accessToken, xeroTenantId, payRunID, 1);
+                com.xero.models.payrolluk.Payslips paySlips = payrollUkApi.getPaySlips(accessToken, xeroTenantId, payRunID, 1);
                 messages.add("GET All Payslips in PayRun found for first name: " + paySlips.getPaySlips().get(0).getFirstName() );            
                 
                 // GET Single PaySlip for UK Payroll
@@ -3316,7 +3316,7 @@ public class AuthenticatedResource extends HttpServlet {
                 UUID contactID = null;
                 String status = null;
                 int page = 1;
-                Quotes quotes = accountingApi.getQuotes(savedAccessToken, xeroTenantId, ifModifiedSince, dateFrom, dateTo, expiryDateFrom, expiryDateTo, contactID, status, page, order);
+                Quotes quotes = accountingApi.getQuotes(savedAccessToken, xeroTenantId, ifModifiedSince, dateFrom, dateTo, expiryDateFrom, expiryDateTo, contactID, status, page, order, null);
                 if (quotes.getQuotes().size() > 0) {
                     UUID quoteID = quotes.getQuotes().get(0).getQuoteID();
                     Attachments quotesAttachments = accountingApi.getQuoteAttachments(accessToken, xeroTenantId, quoteID);
@@ -3571,7 +3571,7 @@ public class AuthenticatedResource extends HttpServlet {
                 UUID contactID = null;
                 String status = null;
                 int page = 1;
-                Quotes quotes = accountingApi.getQuotes(savedAccessToken, xeroTenantId, ifModifiedSince, dateFrom, dateTo, expiryDateFrom, expiryDateTo, contactID, status, page, order);
+                Quotes quotes = accountingApi.getQuotes(savedAccessToken, xeroTenantId, ifModifiedSince, dateFrom, dateTo, expiryDateFrom, expiryDateTo, contactID, status, page, order, null);
                 
                 if (quotes.getQuotes().size() > 0) {
                     UUID quoteID = quotes.getQuotes().get(0).getQuoteID();
@@ -4917,11 +4917,11 @@ public class AuthenticatedResource extends HttpServlet {
                 // GET all Link Transactions
 
                 int page = 1;
-                String linkedTransactionID = null;
-                String sourceTransactionID = null;
-                String targetTransactionID = null;
+                UUID linkedTransactionID = null;
+                UUID sourceTransactionID = null;
+                UUID targetTransactionID = null;
                 String status = null;
-                String contactID = null;
+                UUID contactID = null;
                 LinkedTransactions linkTransactions = accountingApi.getLinkedTransactions(accessToken, xeroTenantId,
                         page, linkedTransactionID, sourceTransactionID, contactID, status, targetTransactionID);
                 messages.add("Get Link Transactions - total : " + linkTransactions.getLinkedTransactions().size());
@@ -5553,7 +5553,7 @@ public class AuthenticatedResource extends HttpServlet {
                 Quotes updatedOrCreatedQuotes = accountingApi.updateOrCreateQuotes(accessToken, xeroTenantId, quotes, summarizeErrors);
                 messages.add("update OR create Quotes - Count : " + updatedOrCreatedQuotes.getQuotes().size());
               
-                Quotes allQuotes = accountingApi.getQuotes(savedAccessToken, xeroTenantId, ifModifiedSince, dateFrom, dateTo, expiryDateFrom, expiryDateTo, contactID, status, page, order);
+                Quotes allQuotes = accountingApi.getQuotes(savedAccessToken, xeroTenantId, ifModifiedSince, dateFrom, dateTo, expiryDateFrom, expiryDateTo, contactID, status, page, order,  null);
                 messages.add("Get Quotes - Count : " + allQuotes.getQuotes().size());
                 UUID quoteID = allQuotes.getQuotes().get(0).getQuoteID();
                 
