@@ -55,6 +55,7 @@ public class TokenRefresh {
                             new GenericUrl(TOKEN_SERVER_URL), refreshToken)
                             .setClientAuthentication(new BasicAuthentication(this.clientId, this.clientSecret))
                             .execute();
+
                     if (logger.isDebugEnabled()) {
                         logger.debug("------------------ Refresh Token : SUCCESS -------------------");
                     }
