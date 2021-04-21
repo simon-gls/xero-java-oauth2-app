@@ -49,6 +49,7 @@ public class Callback extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        System.out.println("Callback invoked");
         System.out.println("clientId=" + clientId);
         System.out.println("clientSecret=" + clientSecret);
         System.out.println("redirectURI=" + redirectURI);
